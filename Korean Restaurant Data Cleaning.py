@@ -7,11 +7,14 @@ df = pd.read_excel('Korean Restaurant Dataset.xlsx')
 # Initial Data Exploration
 df.head(5)
 
-df.columns
+df.columns.tolist()
 '''
-    Index(['Restaurant Name', 'Rating', 'Number Of Ratings', 'Price Range',
-        'Address', 'Reviews'],
-        dtype='object')
+    ['Restaurant Name',
+    'Rating',
+    'Number Of Ratings',
+    'Price Range',
+    'Address',
+    'Reviews']
 '''
 
 df.dtypes
@@ -75,20 +78,41 @@ df.shape
     (151, 6)
 '''
 
-
 # Data Cleaning
 
-df.dropna() # Dropping null values 
+# Dropping rows with null values 
+df.dropna() 
 
+# Converting object columns to string
+df[['Restaurant Name', 'Address', 'Reviews']] = df[['Restaurant Name', 'Address', 'Reviews']].astype('string')
+df.dtypes
+
+# Changing values in 'Number Of Ratings' from object to int
 df['Number Of Ratings'] = df['Number Of Ratings'].str.strip('()')
 
-df.head()
-
-# Changing values in 'Number Of Ratings' to int
 for ratings in df['Number Of Ratings']: 
     if 'K' in ratings: 
         # df.loc[df['Number Of Ratings'] == ratings, 'Number Of Ratings'] = ratings[0::2].strip('K') + '00' # Alternative method using strip
         df.loc[df['Number Of Ratings'] == ratings, 'Number Of Ratings'] = ratings[0:-1:2] + '00' # Uses just indexing
     continue 
 
-df.head(100)
+df['Number Of Ratings'] = df['Number Of Ratings'].astype('int')
+
+# Identifying Unique values in 'Price Range' column
+df['Price Range'].unique().tolist()
+'''
+    ['£20–30',
+    '£20–40',
+    '£10–20',
+    '£1–10',
+    '£10–30',
+    nan,
+    '££',
+    '£30–40',
+    '⋅ Opens 6\u202fpm Wed',
+    '£100+',
+    '£££',
+    '11 Kensington High St']
+'''
+
+df.dtypes
