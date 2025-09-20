@@ -109,10 +109,52 @@ df['Price Range'].unique().tolist()
     nan,
     '££',
     '£30–40',
-    '⋅ Opens 6\u202fpm Wed',
+    '⋅ Opens 6\u202fpm Wed', 
     '£100+',
     '£££',
     '11 Kensington High St']
+    
+    As we can see, the price ranges for all these restaurants are all over the place and require a fixed system. 
+    A common pricing system uses '£' signs to determine how pricey a restaurant can be. 
+    
+    In our case, we can use £, ££, £££ to indicate the diferent price levels. 
+    
+    £ : 1-20 
+    ££ : 21 - 50
+    £££ : 51 and above 
+    
+    This system is easier to follow but less inidicative of the pricing for the restaurant
+'''
+ 
+# Changing the value with '⋅ Opens 6 pm Wed' to fit the system of £, ££, £££
+df['Price Range' == '⋅ Opens 6 pm Wed'] = '£30-40'
+
+# Changing the value with '11 Kensington High St' to fit the system of £, ££, £££
+df['Price Range' == '11 Kensington High St'] = '£30-40'
+'''
+    Was able to identify price range by checking their menu online. 
 '''
 
-df.dtypes
+# Identifying rows with null data
+null_data = df[df['Price Range'].isnull()]
+print(null_data['Restaurant Name'].tolist())
+'''
+    ['Hanwoo Village - Authentic Korean BBQ', 
+    'Keonbae Barbeque & Beer', 
+    'Chungdam', 
+    'Korean Grill Kensington', 
+    'Horangee Pocha Korean BBQ Buffet', 
+    'BAB N SUUL, Korean BBQ Restaurant', 
+    'Sagye - Imperial Wharf', 
+    'Iteaja', 
+    'RedFarm', 
+    'Korean Food', 
+    'Jjang korean inspired food', 
+    'Koko Grill Korean BBQ Restaurant', 
+    'Miga', 
+    'Jang Restaurant']
+'''
+
+
+df.head(50)
+df.shape
