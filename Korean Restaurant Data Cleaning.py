@@ -127,15 +127,15 @@ df['Price Range'].unique().tolist()
 '''
  
 # Changing the value with '⋅ Opens 6 pm Wed' to fit the system of £, ££, £££
-df['Price Range' == '⋅ Opens 6 pm Wed'] = '£30-40'
+df.loc[df['Price Range'] == '⋅ Opens 6 pm Wed', 'Price Range'] = '£30-40'
 
 # Changing the value with '11 Kensington High St' to fit the system of £, ££, £££
-df['Price Range' == '11 Kensington High St'] = '£30-40'
+df.loc[df['Price Range'] == '11 Kensington High St', 'Price Range'] = '£30-40'
 '''
     Was able to identify price range by checking their menu online. 
 '''
 
-# Identifying rows with null data
+# Identifying rows with null data in 'Price Range' column
 null_data = df[df['Price Range'].isnull()]
 print(null_data['Restaurant Name'].tolist())
 '''
@@ -153,8 +153,11 @@ print(null_data['Restaurant Name'].tolist())
     'Koko Grill Korean BBQ Restaurant', 
     'Miga', 
     'Jang Restaurant']
+    
+    Now that we have identified the restaurants with Nan 'Price Ranges' we can investigate their price ranges and add them into the data set individuall. 
 '''
 
 
 df.head(50)
-df.shape
+# df.dtypes
+# df.shape
