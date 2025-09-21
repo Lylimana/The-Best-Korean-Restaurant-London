@@ -155,9 +155,37 @@ print(null_data['Restaurant Name'].tolist())
     'Jang Restaurant']
     
     Now that we have identified the restaurants with Nan 'Price Ranges' we can investigate their price ranges and add them into the data set individuall. 
+    
+    Investigating price ranges: 
+        
+        Hanwoo Village - Authentic Korean BBQ               ££-£££
+        Keonbae Barbeque & Beer                             ££-£££
+        Chungdam                                            £
+        Korean Grill Kensington                             ££-£££
+        Horangee Pocha Korean BBQ Buffet                    £
+        BAB N SUUL, Korean BBQ Restaurant                   ££
+        Sagye - Imperial Wharf                              ££-£££
+        Iteaja                                              ££-£££
+        RedFarm                                             ££-£££
+        Korean Food                                         Will require more identifiers to search up due to broad name
+        Jjang korean inspired food                          Closed
+        Koko Grill Korean BBQ Restaurant                    ££-£££
+        Miga                                                ££-£££
+        Jang Restaurant                                     ££-£££
 '''
 
+# Getting location for 'Korean Food' Restaurant 
+korea_food_address = df.loc[df['Restaurant Name'] == 'Korean Food', 'Address']
+print('The address for Korea Food is: ' + korea_food_address)
+'''
+    19, Chapman House
+    
+    From searching the address online, it seems to be an appartment block and can therefore be removed.
+'''
 
-df.head(50)
+# Dropping row with 'Korea Food'
+df = df.drop(df[df['Restaurant Name'] == 'Korean Food'].index)
+
+# df.head(50)
 # df.dtypes
 # df.shape
