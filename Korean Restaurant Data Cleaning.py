@@ -272,24 +272,24 @@ from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 from geopy.extra.rate_limiter import RateLimiter
 
-# for address in df['Address']: 
-#     if address != '':
-#         geolocator = Nominatim(user_agent = "manalili.mig@gmail.com")
-#         geocode = RateLimiter(geolocator.geocode, min_delay_seconds = 1)
-#         location = geolocator.geocode(address)
-#         df.loc[df['Address'] == address, 'Latitude'] = location.latitude
-#         df.loc[df['Address'] == address, 'Longitude'] = location.longitude
-#     continue
-
-
+# Converting address to latitude and longitude
 geolocator = Nominatim(user_agent = "manalili.mig@gmail.com")
 geocode = RateLimiter(geolocator.geocode, min_delay_seconds = 1)
 df['Location'] = df['Address'].apply(geocode)
 
-df['point'] = df['location'].apply(lambda loc: tuple(loc.point) if loc else None)
+df['Latitude'] = df['Location'].apply(lambda loc: tuple(loc.point) if loc else None)
 
+# Removing unecessary punctuation from 'Latitude' column 
+df['Latitude'] = df['Latitude'].str.strip('()')
 
-# df.head(50)
+df[['Latitude', 'Longitude', '0']].astype('String')
+
+# Spliting values in 'Latitude' column to appropriate columns 
+df[['Latitude', 'Longitude', '0']] = df['Latitude'].str.split(', ', n = 2, expand = True)
+
+df.drop(['0'])
+
+df.head(50)
 
 
 # df.dtypes
