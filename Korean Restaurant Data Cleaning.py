@@ -231,8 +231,43 @@ for names in df['Restaurant Name']:
         df.loc[df['Restaurant Name'] == names, 'Price Range'] = '££'
     continue
 
+# Creating a for loop that filters column values in 'Price Range' to match given key
+'''
+    £ : 1-20 
+    ££ : 21 - 50
+    £££ : 51 and above 
+    
+    Current unique values in 'Price Range' Column: 
+    ['£20–30',
+    '£20–40',
+    '£10–20',
+    '£1–10',
+    '£10–30',
+    '££',
+    '£30–40',
+    '£30-40',
+    '£100+',
+    '£',
+    '£££']
+'''
+for range in df['Price Range']: 
+    if range == '£1–10' or range == '£10–20'or range == '£10–30': 
+        df.loc[df['Price Range'] == range, 'Price Range'] = '£'
+    elif range == '£20–30' or range == '£20–40' or range == '£30–40' or range == '£30–40' or range == '£30-40':
+        df.loc[df['Price Range'] == range, 'Price Range'] = '££' 
+    elif range == '£100+':
+        df.loc[df['Price Range'] == range, 'Price Range'] = '£££' 
+    continue
 
 
-# df.head(50)
+# Checking if all values have been converted. Best practice was to create a new column with an appropriate title for this key and to add the changes there.
+df['Price Range'].unique().tolist()
+
+
+# Create new column for latitude and longitude - this is so we can plot location on tableau.
+
+df.head(50)
+
+
 # df.dtypes
 # df.shape
