@@ -259,38 +259,40 @@ for range in df['Price Range']:
         df.loc[df['Price Range'] == range, 'Price Range'] = '£££' 
     continue
 
+# Creating a column that would make the key in 'Price Range' useable in data visualisations
+df['Price Key'] = np.nan
+
+for price in df['Price Range']: 
+    if price == '£': 
+        df.loc[df['Price Range'] == price, 'Price Key'] = 1 
+    elif price == '££':
+        df.loc[df['Price Range'] == price, 'Price Key'] = 2
+    elif price == '£££': 
+        df.loc[df['Price Range'] == price, 'Price Key'] = 3
+    continue
 
 # Checking if all values have been converted. Best practice was to create a new column with an appropriate title for this key and to add the changes there.
 df['Price Range'].unique().tolist()
 
 
-# Create new column for latitude and longitude - this is so we can plot location on tableau.
-df[['Location','Latitude', 'Longitude']] = np.nan
+# Create new column for coordinates - this is so we can plot location on tableau.
+df[['Location', 'Coordinates']] = np.nan
 
 # Importing Libraries
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 from geopy.extra.rate_limiter import RateLimiter
 
-# Converting address to latitude and longitude
+# Converting address to coordinates
 geolocator = Nominatim(user_agent = "manalili.mig@gmail.com")
 geocode = RateLimiter(geolocator.geocode, min_delay_seconds = 1)
 df['Location'] = df['Address'].apply(geocode)
 
-df['Latitude'] = df['Location'].apply(lambda loc: tuple(loc.point) if loc else None)
-
-# Removing unecessary punctuation from 'Latitude' column 
-df['Latitude'] = df['Latitude'].str.strip('()')
-
-df[['Latitude', 'Longitude', '0']].astype('String')
-
-# Spliting values in 'Latitude' column to appropriate columns 
-df[['Latitude', 'Longitude', '0']] = df['Latitude'].str.split(', ', n = 2, expand = True)
-
-df.drop(['0'])
+df['Coordinates'] = df['Location'].apply(lambda loc: tuple(loc.point) if loc else None)
 
 df.head(50)
 
+df.to_excel('Korea Restaurants Dataset Cleaned.xlsx', index = False)
 
 # df.dtypes
 # df.shape
