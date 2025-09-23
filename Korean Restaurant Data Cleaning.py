@@ -265,8 +265,31 @@ df['Price Range'].unique().tolist()
 
 
 # Create new column for latitude and longitude - this is so we can plot location on tableau.
+df[['Location','Latitude', 'Longitude']] = np.nan
 
-df.head(50)
+# Importing Libraries
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut
+from geopy.extra.rate_limiter import RateLimiter
+
+# for address in df['Address']: 
+#     if address != '':
+#         geolocator = Nominatim(user_agent = "manalili.mig@gmail.com")
+#         geocode = RateLimiter(geolocator.geocode, min_delay_seconds = 1)
+#         location = geolocator.geocode(address)
+#         df.loc[df['Address'] == address, 'Latitude'] = location.latitude
+#         df.loc[df['Address'] == address, 'Longitude'] = location.longitude
+#     continue
+
+
+geolocator = Nominatim(user_agent = "manalili.mig@gmail.com")
+geocode = RateLimiter(geolocator.geocode, min_delay_seconds = 1)
+df['Location'] = df['Address'].apply(geocode)
+
+df['point'] = df['location'].apply(lambda loc: tuple(loc.point) if loc else None)
+
+
+# df.head(50)
 
 
 # df.dtypes
