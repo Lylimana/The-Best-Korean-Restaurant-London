@@ -276,7 +276,7 @@ df['Price Range'].unique().tolist()
 
 
 # Create new column for coordinates - this is so we can plot location on tableau.
-df[['Location', 'Coordinates']] = np.nan
+df[['Location', 'Coordinates', 'Latitude', 'Longitude']] = np.nan
 
 # Importing Libraries
 from geopy.geocoders import Nominatim
@@ -288,11 +288,8 @@ geolocator = Nominatim(user_agent = "manalili.mig@gmail.com")
 geocode = RateLimiter(geolocator.geocode, min_delay_seconds = 1)
 df['Location'] = df['Address'].apply(geocode)
 
-df['Coordinates'] = df['Location'].apply(lambda loc: tuple(loc.point) if loc else None)
+df['Latitude'] = df['Location'].apply(lambda loc: loc.latitude if loc else None)
+df['Longitude'] = df['Location'].apply(lambda loc: loc.longitude if loc else None)
 
-df.head(50)
-
+# Exporting Dataset
 df.to_excel('Korea Restaurants Dataset Cleaned.xlsx', index = False)
-
-# df.dtypes
-# df.shape
